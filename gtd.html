@@ -19,27 +19,36 @@
         attribute float a_Epoch;
 
         uniform float u_EpochTime;
+        uniform float u_Span;
         uniform mat4 u_MapMatrix;
+
+        varying float v_Alpha;
 
         void main() {
           if ( a_Epoch > u_EpochTime) {
             gl_Position = vec4(-1,-1,-1,-1);
-          } else {
+          } else if (u_EpochTime - a_Epoch > u_Span) {
+            gl_Position = vec4(-1,-1,-1,-1);
+          }
+          else {
             gl_Position = u_MapMatrix * a_WorldCoord;
           }
+          v_Alpha = (u_EpochTime - a_Epoch) / u_Span;
 
-          gl_PointSize = 5.0;
+          gl_PointSize = 15.0;
         }
     </script>
 
     <script type="x-shader/x-vertex" id="point-fragment-shader">
         precision mediump float;
 
+        varying float v_Alpha;
         void main() {
+          float r = 1.0 - v_Alpha;
           float dist = distance( vec2(0.5, 0.5), gl_PointCoord);
           dist = 1.0 - (dist * 2.0);
           dist = max(0.0, dist);
-          gl_FragColor =  vec4(1.0, .0, .0, 1.) * dist;
+          gl_FragColor =  vec4(r, .0, .0, 1.) * dist;
         } 
     </script>
     <script src="http://maps.googleapis.com/maps/api/js"></script>
@@ -376,6 +385,11 @@
 
           var sliderTime = gl.getUniformLocation(program, 'u_EpochTime');
           gl.uniform1f(sliderTime, timeSlider.getCurrentTime() / 1000.0);
+
+          var spanEpoch = 2.0*365*24*68*60;
+          var span = gl.getUniformLocation(program, 'u_Span');
+          gl.uniform1f(span, spanEpoch);
+
 
           gl.drawArrays(gl.POINTS, 0, pointCount);
           timeSlider.animate();
