@@ -297,4 +297,14 @@ var mapStyles = [
   }
 ];
 
+Date.prototype.yyyymmdd = function(stepsize) {
+  if (stepsize == undefined) stepsize = -1;
+  
+  var yyyy = this.getUTCFullYear().toString();                                    
+  var mm = (this.getUTCMonth()+1).toString();
+  var dd  = this.getUTCDate().toString();             
+  var res = yyyy;
+  if (stepsize < 365*24*60*60) res += '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+  return res;
+};  
   
