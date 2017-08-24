@@ -38,27 +38,30 @@ function update() {
   translateMatrix(mapMatrix, translation.x, translation.y);  
 
   var currentEpoch = timeSlider.getCurrentTime()/1000.0;
-  gtdGl.draw(mapMatrix, {currentEpoch: currentEpoch});
+  gtdGl.draw(mapMatrix, {currentEpoch: currentEpoch, span: 365*24*60*60});
   timeSlider.animate();
 }
 
 function initTimeSlider(opts) {
   var startTime = new Date("1970-01-01").getTime();
   var endTime = new Date("2016-12-31").getTime();
-  if (opts.startTime) {
-    startTime = opts.startTime;
-  }
-  if (opts.endTime) {
-    endTime = opts.endTime;
+  if (typeof(opts) != "undefined") {
+    if (opts.startTime) {
+      startTime = opts.startTime;
+    }
+    if (opts.endTime) {
+      endTime = opts.endTime;
+    }
+
   }
   var timeSlider = new TimeSlider({
     startTime: startTime,
     endTime: endTime,
     dwellAnimationTime: 2 * 1000,
     increment: 30*24*60*60*1000,
-    //span: 21*60*60*30*1000,
+    span: 24*60*60*30*1000,
     formatCurrentTime: function(date) {
-      return date.getFullYear();
+      return date.yyyymmdd();
     },
     animationRate: {
       fast: 10,
@@ -91,6 +94,6 @@ function init() {
   gui = new dat.GUI();
   gui.add(gtdGl, 'show0Casualties');
 
-}
+ }
 
 document.addEventListener('DOMContentLoaded', init, false);
