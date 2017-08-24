@@ -23,7 +23,8 @@ var gtdVertexShader =
 '    if (a_val > 0.0) {\n' +
 '        pointSize = a_val;\n' +
 '    }\n' + 
-'    gl_PointSize = sqrt(a_val);\n' +
+'    //gl_PointSize = sqrt(pointSize);\n' +
+'    gl_PointSize = 10.0;\n' +
 '    v_alpha = (u_epoch - a_epoch) / u_span;\n' + 
 '    v_val = a_val;\n' +
 '}\n';
@@ -34,27 +35,18 @@ var gtdFragmentShader =
 'varying float v_val;\n' +
 'void main() {\n' +
 '    vec4 color;\n' +
-'    if (v_val == 1.0) {\n' +
-'      color = vec4(13.0/255., 115.0/255., 39.0/255., .85); \n' +
-'    }\n' + 
-'    else if (v_val == 2.0) {\n' +
-'      color = vec4(244.0/255., 115.0/255., 33.0/255., .85); \n' +
-'    }\n' + 
-'    else if (v_val == 3.0) {\n' +
-'      color = vec4(105.0/255., 42.0/255., 123.0/255., .85); \n' +
-'    }\n' + 
-'    else if (v_val == 4.0) {\n' +
-'      color = vec4(160.0/255., 123.0/255., 105.0/255., .85); \n' +
+'    if (v_val == 0.0) {\n' +
+'      color = vec4(215.0/255., 140.0/255., 15.0/255., .85); \n' +
 '    }\n' + 
 '    else {\n' +
-'      color = vec4(245.0/255., 245.0/255., 0.0/255., .85); \n' +
+'      color = vec4(245.0/255., 0.0/255., 0.0/255., .85); \n' +
 '    }\n' + 
 '    gl_FragColor = color;\n' +
 '}\n';
 
 var GtdGl = function GtdGl(gl) {
     this.gl = gl;
-    this.program = createProgram(gl, dotMapVertexShader, dotMapFragmentShader);
+    this.program = createProgram(gl, gtdVertexShader, gtdFragmentShader);
     this.buffer = {
         'numAttributes': 4,
         'count': 0,
@@ -85,7 +77,7 @@ GtdGl.prototype.setBuffer = function(data) {
 }
 
 GtdGl.prototype.draw = function draw(transform, options) {
-    if (this.buffer.ready && this.showDotmap) {
+    if (this.buffer.ready) {
         var options = options || {};
         var gl = this.gl;
         gl.enable(gl.BLEND);
@@ -95,15 +87,18 @@ GtdGl.prototype.draw = function draw(transform, options) {
         gl.useProgram(program.program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer.buffer);
         bindAttribute(gl, program.program, 'a_coord', 2, gl.FLOAT, false, this.buffer.numAttributes*4, 0);    
-        bindAttribute(gl, program.program, 'a_val', 1, gl.FLOAT, false, this.buffer.numAttributes*4, 8);    
-        bindAttribute(gl, program.program, 'a_val', 1, gl.FLOAT, false, this.buffer.numAttributes*4, 8);    
+        bindAttribute(gl, program.program, 'a_epoch', 1, gl.FLOAT, false, this.buffer.numAttributes*4, 8);    
+        bindAttribute(gl, program.program, 'a_val', 1, gl.FLOAT, false, this.buffer.numAttributes*4, 12);    
         gl.uniformMatrix4fv(program.u_map_matrix, false, transform);
-        gl.uniform1f(program.u_point_size, pointSize);
+        //gl.uniform1f(program.u_point_size, pointSize);
 
-        if (this.showDotmap) {
+        var currentEpoch = options.currentEpoch;
+        gl.uniform1f(program.u_epoch, currentEpoch);
+
+        var span = options.span;
+        gl.uniform1f(program.u_span, span);
+
         gl.drawArrays(gl.POINTS, 0, buffer.count);
-
-        }
         gl.disable(gl.BLEND);
     }
 };
