@@ -64,8 +64,8 @@ function initTimeSlider(opts) {
     },
     animationRate: {
       fast: 10,
-      medium: 30,
-      slow: 60
+      medium: 20,
+      slow: 40
     }
   });  
   return timeSlider;
