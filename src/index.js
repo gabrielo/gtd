@@ -38,7 +38,7 @@ function update() {
   translateMatrix(mapMatrix, translation.x, translation.y);  
 
   var currentEpoch = timeSlider.getCurrentTime()/1000.0;
-  gtdGl.draw(mapMatrix, {currentEpoch: currentEpoch, span: 365*24*60*60});
+  gtdGl.draw(mapMatrix, {currentEpoch: currentEpoch, span: 60*24*60*60});
   timeSlider.animate();
 }
 
@@ -58,8 +58,7 @@ function initTimeSlider(opts) {
     startTime: startTime,
     endTime: endTime,
     dwellAnimationTime: 2 * 1000,
-    increment: 30*24*60*60*1000,
-    span: 24*60*60*30*1000,
+    increment: 24*60*60*1000,
     formatCurrentTime: function(date) {
       return date.yyyymmdd();
     },
