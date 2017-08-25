@@ -11,9 +11,9 @@ var gtdVertexShader =
 'varying float v_alpha;\n' +
 'void main() {\n' +
 '    vec4 position;\n' +
-'    if (a_epoch > u_epoch + u_span) {\n' +
+'    if (u_epoch - a_epoch > u_span) {\n' +
 '        position = vec4(-1,-1,-1,-1);\n' +
-'    } else if (a_epoch < u_epoch) {\n' +
+'    } else if (a_epoch > u_epoch) {\n' +
 '        position = vec4(-1,-1,-1,-1);\n' +
 '    } else {\n' +
 '        position = u_map_matrix * a_coord;\n' +
