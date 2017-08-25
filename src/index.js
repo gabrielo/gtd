@@ -38,7 +38,7 @@ function update() {
   translateMatrix(mapMatrix, translation.x, translation.y);  
 
   var currentEpoch = timeSlider.getCurrentTime()/1000.0;
-  gtdGl.draw(mapMatrix, {currentEpoch: currentEpoch, span: 60*24*60*60});
+  gtdGl.draw(mapMatrix, {currentEpoch: currentEpoch, span: 120*24*60*60});
   timeSlider.animate();
 }
 
