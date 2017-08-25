@@ -33,6 +33,7 @@ var gtdFragmentShader =
 '#extension GL_OES_standard_derivatives : enable\n' +
 'precision mediump float;\n' +
 'varying float v_val;\n' +
+'varying float v_alpha;\n' + 
 'void main() {\n' +
 '    vec4 color;\n' +
 '    if (v_val == 0.0) {\n' +
@@ -41,7 +42,7 @@ var gtdFragmentShader =
 '    else {\n' +
 '      color = vec4(245.0/255., 0.0/255., 0.0/255., .85); \n' +
 '    }\n' + 
-'    gl_FragColor = color;\n' +
+'    gl_FragColor = vec4(color.rgb, 1.0 - v_alpha);\n' +
 '}\n';
 
 var GtdGl = function GtdGl(gl) {
