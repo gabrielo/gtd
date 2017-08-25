@@ -42,7 +42,7 @@ var gtdFragmentShader =
 '    else {\n' +
 '      color = vec4(245.0/255., 0.0/255., 0.0/255., .85); \n' +
 '    }\n' + 
-'    gl_FragColor = vec4(color.rgb, 1.0 - v_alpha);\n' +
+'    gl_FragColor = vec4(color.rgb, smoothstep(0.5, 1.0, 1.0 - v_alpha));\n' +
 '}\n';
 
 var GtdGl = function GtdGl(gl) {
