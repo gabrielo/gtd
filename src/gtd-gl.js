@@ -36,13 +36,21 @@ var gtdFragmentShader =
 'varying float v_alpha;\n' + 
 'void main() {\n' +
 '    vec4 color;\n' +
+'    float r = 0.0;\n' +
+'    float delta = 0.0;\n' +
+'    float alpha = 0.0;\n' +
 '    if (v_val == 0.0) {\n' +
 '      color = vec4(215.0/255., 140.0/255., 15.0/255., .85); \n' +
 '    }\n' + 
 '    else {\n' +
 '      color = vec4(245.0/255., 0.0/255., 0.0/255., .85); \n' +
 '    }\n' + 
-'    gl_FragColor = vec4(color.rgb, smoothstep(0.5, 1.0, 1.0 - v_alpha));\n' +
+'    vec4 solid_color = vec4(color.rgb, smoothstep(0.5, 1.0, 1.0 - v_alpha));\n' +
+'    vec2 cxy = 2.0 * gl_PointCoord - 1.0;\n' +
+'    r = dot(cxy, cxy);\n' +
+'    delta = fwidth(r);\n' +
+'    alpha = 1.0 - smoothstep(1.0 - delta, 1.0 + delta, r);\n' +
+'    gl_FragColor = solid_color * alpha;\n' + 
 '}\n';
 
 var GtdGl = function GtdGl(gl) {
