@@ -22,9 +22,11 @@ var gtdVertexShader =
 '    float pointSize = 1.0;\n' +
 '    if (a_val > 0.0) {\n' +
 '        pointSize = a_val;\n' +
+'    } else {\n' + 
+'        pointSize = 10.0;\n' +
 '    }\n' + 
-'    //gl_PointSize = sqrt(pointSize);\n' +
-'    gl_PointSize = 10.0;\n' +
+'    gl_PointSize = clamp(sqrt(pointSize), 5.0, 500.0);\n' +
+'    //gl_PointSize = 10.0;\n' +
 '    v_alpha = (u_epoch - a_epoch) / u_span;\n' + 
 '    v_val = a_val;\n' +
 '}\n';
