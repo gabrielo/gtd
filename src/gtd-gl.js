@@ -25,8 +25,7 @@ var gtdVertexShader =
 '    } else {\n' + 
 '        pointSize = 10.0;\n' +
 '    }\n' + 
-'    gl_PointSize = clamp(sqrt(pointSize), 5.0, 500.0);\n' +
-'    //gl_PointSize = 10.0;\n' +
+'    gl_PointSize = clamp(sqrt(pointSize), 3.0, 500.0);\n' +
 '    v_alpha = (u_epoch - a_epoch) / u_span;\n' + 
 '    v_val = a_val;\n' +
 '}\n';
